@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gallery | Glitz and Beautiful Salon</title>
+  <meta name="description" content="Browse our portfolio of beautiful nails, lashes, and beauty treatments.">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/animate.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+  <!-- Lightbox CSS -->
+  <style>
+    /* Lightbox Overlay */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+    
+    .lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+    
+    /* Lightbox Content Wrapper */
+    .lightbox-content {
+      position: relative;
+      max-width: 95%;
+      max-height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(198, 59, 154, 0.5);
+      border: 3px solid var(--gold);
+      object-fit: contain;
+    }
+    
+    /* Close Button (X) - TOP RIGHT, always visible */
+    .lightbox-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      color: var(--white);
+      font-size: 2.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10000;
+      background: rgba(0,0,0,0.6);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    
+    .lightbox-close:hover {
+      color: var(--white);
+      background: var(--pink);
+      transform: scale(1.1);
+    }
+    
+    /* Navigation Arrows - INSIDE image area, always visible */
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--white);
+      font-size: 3rem;
+      cursor: pointer;
+      padding: 20px 15px;
+      background: rgba(0,0,0,0.6);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      z-index: 10000;
+      user-select: none;
+      line-height: 1;
+    }
+    
+    .lightbox-nav:hover {
+      background: var(--pink);
+      color: var(--white);
+      transform: translateY(-50%) scale(1.1);
+    }
+    
+    .lightbox-prev { left: 15px; }
+    .lightbox-next { right: 15px; }
+    
+    /* Image Counter */
+    .lightbox-counter {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--white);
+      font-size: 1rem;
+      background: rgba(0,0,0,0.7);
+      padding: 5px 15px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .lightbox-nav {
+        font-size: 2.5rem;
+        padding: 15px 12px;
+      }
+      .lightbox-prev { left: 10px; }
+      .lightbox-next { right: 10px; }
+      .lightbox-close {
+        top: 10px;
+        right: 10px;
+        font-size: 2rem;
+        width: 40px;
+        height: 40px;
+      }
+      .lightbox-counter {
+        bottom: -35px;
+        font-size: 0.9rem;
+      }
+      .lightbox-content img {
+        max-height: 75vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <img src="assets/img/logo.png" alt="Glitz & Beauty Logo" width="50" height="50" style="object-fit: contain;">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+        <li class="nav-item"><a class="nav-link active" href="gallery.html">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="testimonials.html">Reviews</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        <li class="nav-item"><a class="nav-link btn-whatsapp ms-3" href="booking.html">Book Now</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Hero -->
+<section class="page-hero" style="position: relative; height: 60vh; min-height: 400px; overflow: hidden;">
+  <!-- Hero Image -->
+  <img src="assets/img/hero-gallery.jpg" 
+       alt="Glitz & Beauty Salon Team" 
+       loading="lazy"
+       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;">
+  
+  <!-- Overlay (matches index hero) -->
+  <div class="hero-overlay" style="position: absolute; inset: 0; background: rgba(0,0,0,0.65);"></div>
+  
+  <!-- Content -->
+  <div class="container position-relative z-2" style="position: relative; z-index: 2; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 80px;">
+    <div class="wow fadeInUp">
+      <h1 style="font-family: 'Great Vibes', cursive; font-size: clamp(2.5rem, 5vw, 4rem); color: var(--white); text-shadow: 0 0 10px rgba(0,0,0,0.5); margin-bottom: 1rem;">
+        About Glitz
+      </h1>
+      <p style="font-size: 1.2rem; opacity: 0.95; max-width: 600px; margin: 0 auto;">
+        Where beauty meets excellence in Modelpark
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Gallery Grid (11 Images) -->
+<section class="section-padding">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Image 1 -->
+      <div class="col-md-4 col-6 wow fadeInUp">
+        <div class="gallery-item" data-index="0">
+          <img src="assets/img/gallery1.jpg" alt="Nail Art Design" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 2 -->
+      <div class="col-md-4 col-6 wow fadeInUp" data-wow-delay=".1s">
+        <div class="gallery-item" data-index="1">
+          <img src="assets/img/gallery2.jpg" alt="Gel Nails Close-up" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 3 -->
+      <div class="col-md-4 col-6 wow fadeInUp" data-wow-delay=".2s">
+        <div class="gallery-item" data-index="2">
+          <img src="assets/img/gallery3.jpg" alt="Eyelash Extensions" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 4 -->
+      <div class="col-md-4 col-6 wow fadeInUp">
+        <div class="gallery-item" data-index="3">
+          <img src="assets/img/gallery4.jpg" alt="Polygel Nail Sculpting" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 5 -->
+      <div class="col-md-4 col-6 wow fadeInUp" data-wow-delay=".1s">
+        <div class="gallery-item" data-index="4">
+          <img src="assets/img/gallery5.jpg" alt="Bridal Makeup Look" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 6 -->
+      <div class="col-md-4 col-6 wow fadeInUp" data-wow-delay=".2s">
+        <div class="gallery-item" data-index="5">
+          <img src="assets/img/gallery6.jpg" alt="Salon Interior" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 7 -->
+      <div class="col-md-4 col-6 wow fadeInUp">
+        <div class="gallery-item" data-index="6">
+          <img src="assets/img/gallery7.jpg" alt="Luxury Pedicure" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 8 -->
+      <div class="col-md-4 col-6 wow fadeInUp" data-wow-delay=".1s">
+        <div class="gallery-item" data-index="7">
+          <img src="assets/img/gallery8.jpg" alt="Nail Art Details" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 9 -->
+      <div class="col-md-4 col-6 wow fadeInUp" data-wow-delay=".2s">
+        <div class="gallery-item" data-index="8">
+          <img src="assets/img/gallery9.jpg" alt="Lash & Brow Styling" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 10 -->
+      <div class="col-md-4 col-6 wow fadeInUp">
+        <div class="gallery-item" data-index="9">
+          <img src="assets/img/gallery10.jpg" alt="Facial Treatment" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+      <!-- Image 11 -->
+      <div class="col-md-4 col-6 wow fadeInUp" data-wow-delay=".1s">
+        <div class="gallery-item" data-index="10">
+          <img src="assets/img/gallery11.jpg" alt="Final Glam Look" loading="lazy">
+          <div class="gallery-overlay">
+            <i class="bi bi-eye-fill text-gold fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <div class="lightbox-content">
+    <img src="" alt="Gallery Image" id="lightboxImg">
+    <span class="lightbox-nav lightbox-prev" id="lightboxPrev">&#10094;</span>
+    <span class="lightbox-nav lightbox-next" id="lightboxNext">&#10095;</span>
+  </div>
+  <div class="lightbox-counter" id="lightboxCounter">1 / 11</div>
+</div>
+
+<!-- CTA -->
+<section class="cta text-center">
+  <div class="container">
+    <h2 class="wow fadeInUp" style="color: white;">Love What You See?</h2>
+    <a href="https://wa.me/27711203281" class="btn btn-whatsapp-lg wow fadeInUp mt-3">Book Your Appointment</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer text-center">
+  <div class="container">
+    <div class="footer-social">
+      <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+      <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+      <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+    </div>
+    <p class="mt-4">© 2026 Glitz and Beautiful Salon</p>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/27711203281" class="whatsapp-float"><i class="bi bi-whatsapp"></i></a>
+
+<!-- Scripts -->
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/wow.min.js"></script>
+<script src="assets/js/main.js"></script>
+
+<!-- Lightbox JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  
+  let currentIndex = 0;
+  
+  // Build images array from gallery
+  const images = Array.from(galleryItems).map(item => {
+    const img = item.querySelector('img');
+    return {
+      src: img.src,
+      alt: img.alt || 'Gallery Image'
+    };
+  });
+  
+  // Open lightbox when gallery item clicked
+  galleryItems.forEach((item, index) => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      currentIndex = index;
+      openLightbox(index);
+    });
+  });
+  
+  function openLightbox(index) {
+    if (!images[index]) return;
+    lightboxImg.src = images[index].src;
+    lightboxImg.alt = images[index].alt;
+    updateCounter();
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent background scroll
+  }
+  
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  
+  function updateCounter() {
+    lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+  }
+  
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    lightboxImg.src = images[currentIndex].src;
+    lightboxImg.alt = images[currentIndex].alt;
+    updateCounter();
+  }
+  
+  function showNext() {
+    currentIndex = (currentIndex + 1) % images.length;
+    lightboxImg.src = images[currentIndex].src;
+    lightboxImg.alt = images[currentIndex].alt;
+    updateCounter();
+  }
+  
+  // Event listeners
+  lightboxClose.addEventListener('click', function(e) {
+    e.stopPropagation();
+    closeLightbox();
+  });
+  
+  lightboxPrev.addEventListener('click', function(e) {
+    e.stopPropagation();
+    showPrev();
+  });
+  
+  lightboxNext.addEventListener('click', function(e) {
+    e.stopPropagation();
+    showNext();
+  });
+  
+  // Close on overlay click (but not on image or controls)
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (!lightbox.classList.contains('active')) return;
+    
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      closeLightbox();
+    } else if (e.key === 'ArrowLeft') {
+      showPrev();
+    } else if (e.key === 'ArrowRight') {
+      showNext();
+    }
+  });
+  
+  // Prevent image drag
+  lightboxImg.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+  });
+});
+</script>
+
+</body>
+</html>
